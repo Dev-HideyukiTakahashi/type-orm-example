@@ -17,3 +17,6 @@
 
 - Schema log
   - `npx typeorm schema:log -d './build/data-source.js'`
+
+- Start
+-   `npm start` 
