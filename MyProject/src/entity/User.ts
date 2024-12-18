@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, Unique } from "typeorm"
 
 @Entity()
-@Unique(["firstName"])
+// @Unique(["firstName"])
 export class User {
 
     @PrimaryGeneratedColumn()
