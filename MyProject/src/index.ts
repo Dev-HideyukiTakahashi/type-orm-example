@@ -1,7 +1,20 @@
 import { AppDataSource } from "./data-source"
-import { criarUsuario, listarTodosUsuarios, listarTodosVeiculos, removerUsuarioPeloNome, salvarVeiculo } from "./entity-manager"
+import { criarUsuario, listarTodosUsuarios, listarTodosVeiculos, removerUsuario, removerUsuarioPeloNome, salvarVeiculo } from "./entity-manager"
 import { User } from "./entity/User"
 import { Vehicle } from "./entity/Vehicle"
+import { buscarTodosUsuarios, buscarTodosUsuariosInnerJoin, buscarUsuarioPeloNome } from "./query-builder"
+
+async function queryBuilder() {
+    const usr = await buscarUsuarioPeloNome("Timber");
+    console.log("User")
+    console.log(usr);
+    // const usrs = await buscarTodosUsuarios();
+    // console.log("All users")
+    // console.log(usrs)
+    const usrs = await buscarTodosUsuariosInnerJoin()
+    console.log("All users with data")
+    console.log(usrs)
+}
 
 AppDataSource.initialize().then(async () => {
 
@@ -11,7 +24,7 @@ AppDataSource.initialize().then(async () => {
     user.lastName = "Saw"
     user.age = 25
 
-    await criarUsuario(user);
+    // await criarUsuario(user);
 
     const allUsers = await listarTodosUsuarios();
 
@@ -22,14 +35,15 @@ AppDataSource.initialize().then(async () => {
     vehicle.year = 2020
     vehicle.user = timber
 
-    await salvarVeiculo(vehicle);
+    // await salvarVeiculo(vehicle);
 
     await listarTodosVeiculos();
 
-    removerUsuarioPeloNome('Timber');
+    // removerUsuarioPeloNome('Timber');
 
     // allUsers.forEach(u => removerUsuario(u));
 
-
+    console.log("----------With query-builder----------");
+    queryBuilder();
 
 }).catch(error => console.log(error))
