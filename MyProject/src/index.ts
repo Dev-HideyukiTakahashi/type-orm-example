@@ -1,9 +1,15 @@
 import { AppDataSource } from "./data-source"
 import { User } from "./entity/User"
+import { Vehicle } from "./entity/Vehicle"
 
 async function criarUsuario(user: User) {
     await AppDataSource.manager.save(user)
     console.log("Saved a new user with id: " + user.id)
+}
+
+async function salvarVeiculo(vehicle: Vehicle) {
+    await AppDataSource.manager.save(vehicle)
+    console.log("Vehicle a new user with id: " + vehicle.id)
 }
 
 async function listarTodosUsuarios() {
@@ -11,6 +17,13 @@ async function listarTodosUsuarios() {
     const users = await AppDataSource.manager.find(User)
     console.log("Loaded users: ", users)
     return users;
+}
+
+async function listarTodosVeiculos() {
+    console.log("Loading vehicles from the database...")
+    const vehicles = await AppDataSource.manager.find(Vehicle)
+    console.log("Loaded vehicles: ", vehicles)
+    return vehicles;
 }
 
 async function removerUsuario(user: User) {
@@ -41,10 +54,21 @@ AppDataSource.initialize().then(async () => {
 
     const allUsers = await listarTodosUsuarios();
 
+    const timber = await AppDataSource.manager.findOneBy(User, { firstName: user.firstName });
+
+    const vehicle = new Vehicle();
+    vehicle.description = "Porsche 911 carrera"
+    vehicle.year = 2020
+    vehicle.user = timber
+
+    await salvarVeiculo(vehicle);
+
+    await listarTodosVeiculos();
+
     removerUsuarioPeloNome('Timber');
 
     // allUsers.forEach(u => removerUsuario(u));
 
-    const timber = await AppDataSource.manager.findOneBy(User, { firstName: user.firstName });
+
 
 }).catch(error => console.log(error))

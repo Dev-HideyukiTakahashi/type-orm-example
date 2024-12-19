@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, Unique } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, Unique, OneToMany } from "typeorm"
+import { Vehicle } from "./Vehicle"
 
 @Entity()
 // @Unique(["firstName"])
@@ -15,5 +16,8 @@ export class User {
 
     @Column()
     age: number
+
+    @OneToMany(() => Vehicle, (vehicle) => vehicle.user, { cascade: true })
+    fleet: Vehicle[]
 
 }
